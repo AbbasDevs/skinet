@@ -1,6 +1,7 @@
 
 using Microsoft.EntityFrameworkCore;
 using Infrastructure.Data;
+using Infrastructure;
 using Core.Interfaces;
 var builder = WebApplication.CreateBuilder(args);
 
@@ -15,6 +16,7 @@ builder.Services.AddDbContext<StoreContext>(options =>
 builder.Services.AddOpenApi();
 
 builder.Services.AddScoped<IProductRepository,ProductRepository>();
+builder.Services.AddScoped(typeof(IGenericRepository<>), typeof(GenericRepository<>));
 var app = builder.Build();
 
 // Configure the HTTP request pipeline.
