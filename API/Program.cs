@@ -1,4 +1,4 @@
-
+using API.Middleware;
 using Microsoft.EntityFrameworkCore;
 using Infrastructure.Data;
 using Infrastructure;
@@ -17,8 +17,13 @@ builder.Services.AddOpenApi();
 
 builder.Services.AddScoped<IProductRepository,ProductRepository>();
 builder.Services.AddScoped(typeof(IGenericRepository<>), typeof(GenericRepository<>));
+builder.Services.AddCors();
 var app = builder.Build();
 
+app.UseMiddleware<ExceptionMiddleware>();
+
+app.UseCors(x => x.AllowAnyHeader().AllowAnyMethod()
+    .WithOrigins("http://localhost:4200","https://localhost:4200"));
 // Configure the HTTP request pipeline.
 if (app.Environment.IsDevelopment())
 {
